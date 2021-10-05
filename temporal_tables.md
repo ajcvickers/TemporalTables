@@ -25,7 +25,7 @@ EF Core 6.0 supports:
 
 ### Sample application
 
-The sample application used in this post can be [downloaded from GitHub](TODO). It uses a simple EF Core model for customers, products, and orders:
+The sample application used in this post can be [downloaded from GitHub](https://github.com/ajcvickers/TemporalTables). It uses a simple EF Core model for customers, products, and orders:
 
 ```csharp
 public class Customer

@@ -1,0 +1,28 @@
+Script:
+
+- What are temporal tables.
+- Mention Maurycy
+- Add a migration to create the tables
+- Show in SMS
+- Make them temporal and migrate them
+- Change the names of the period columns and history table
+- Revert these changes
+- Revert the model building code
+- Run code to insert data
+- Query for Deloreans
+- Arthur wants to return his DeLorean
+- Bad price
+- Good price - note using Include
+- Delete customer and orders - note no cascade delete
+- Restore customer and orders
+
+
+
+Reset:
+
+- dotnet ef database drop
+- delete migrations
+- comment out model builder code
+- comment out in main
+- revert to temporal all
+- remove temporal as of

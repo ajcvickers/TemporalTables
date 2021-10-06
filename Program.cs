@@ -8,32 +8,42 @@ public class Program
 {
     public static void Main()
     {
-        var timestamps = Seed(new TimeSpan(0, 0, 5));
+        var timestamps = Seed(new TimeSpan(0, 0, 1));
         
-        LookupPrices("DeLorean", timestamps[1], DateTime.UtcNow.AddDays(2));
+        LookupCurrentPrice("DeLorean");
         
+        LookupPrices("DeLorean", timestamps[1], timestamps[3]);
+
         FindOrder("Arthur", timestamps[3]);
-        
+
         DeleteCustomer("Arthur");
-        
+
         QueryCustomerAndOrderSnapshots();
-        
+
         RestoreCustomer("Arthur");
-        
+
         QueryCustomerAndOrderSnapshots();
     }
 
-    private static void LookupPrices(string productName, DateTime from, DateTime to)
+    private static void LookupCurrentPrice(string productName)
     {
         using var context = new OrdersContext();
 
         var product = context.Products.Single(product => product.Name == productName);
         
         Console.WriteLine($"The '{product.Name}' with PK {product.Id} is currently ${product.Price}.");
-        Console.WriteLine($"  Historical prices from {from} to {to}:");
+
+        Console.WriteLine();
+    }
+
+    private static void LookupPrices(string productName, DateTime from, DateTime to)
+    {
+        using var context = new OrdersContext();
+
+        Console.WriteLine($"Historical prices for {productName} from {from} to {to}:");
 
         var productSnapshots = context.Products
-            .TemporalBetween(from, to)
+            .TemporalFromTo(from, to)
             .OrderBy(product => EF.Property<DateTime>(product, "PeriodStart"))
             .Where(product => product.Name == productName)
             .Select(product =>
@@ -48,7 +58,7 @@ public class Program
         foreach (var snapshot in productSnapshots)
         {
             Console.WriteLine(
-                $"    The '{snapshot.Product.Name}' with PK {snapshot.Product.Id} was ${snapshot.Product.Price} from {snapshot.PeriodStart} until {snapshot.PeriodEnd}.");
+                $"  The '{snapshot.Product.Name}' with PK {snapshot.Product.Id} was ${snapshot.Product.Price} from {snapshot.PeriodStart} until {snapshot.PeriodEnd}.");
         }
 
         Console.WriteLine();

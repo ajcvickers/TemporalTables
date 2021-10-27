@@ -1,10 +1,12 @@
-using System;
-using System.Collections.Generic;
-
 public class Customer
 {
-    public Guid Id { get; set; }
-    public string Name  { get; set; }
+    public Customer(string name)
+    {
+        Name = name;
+    }
 
-    public List<Order> Orders { get; set; }
+    public Guid Id { get; private set; }
+    public string Name  { get; init; }
+
+    public List<Order> Orders { get; } = new List<Order>();
 }

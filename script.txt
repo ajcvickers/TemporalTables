@@ -1,28 +1,69 @@
-Script:
-
-- What are temporal tables.
-- Mention Maurycy
-- Add a migration to create the tables
-- Show in SMS
-- Make them temporal and migrate them
-- Change the names of the period columns and history table
-- Revert these changes
-- Revert the model building code
-- Run code to insert data
-- Query for Deloreans
-- Arthur wants to return his DeLorean
-- Bad price
-- Good price - note using Include
-- Delete customer and orders - note no cascade delete
-- Restore customer and orders
+Clean solution
+Delete migrations
+Drop databases 
+delete bundle
+Change back to TemporalAll
+Clean the DbContext
+Remove Pecision attribute
+dotnet tool restore
 
 
+.\efbundle.exe --connection "Server=(localdb)\mssqllocaldb;Database=Production"
 
-Reset:
 
-- dotnet ef database drop
-- delete migrations
-- comment out model builder code
-- comment out in main
-- revert to temporal all
-- remove temporal as of
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder
+            .Entity<Customer>()
+            .ToTable(tableBuilder => tableBuilder.IsTemporal());
+
+        modelBuilder
+            .Entity<Product>()
+            .ToTable(tableBuilder => tableBuilder.IsTemporal());
+
+        modelBuilder
+            .Entity<Order>()
+            .ToTable(tableBuilder => tableBuilder.IsTemporal());
+    }
+
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder.Properties<string>().HaveMaxLength(200);
+    }
+
+
+
+
+1. Jeremy showed the basic concepts of EF earlier. We have here a simple model with three entity types and a DbContext
+2. Show entity types
+   - Constructors; init only; private set
+   - Call out nullable reference types (including reverse engineering)
+3. Show DbContext
+   - Call out implicit usings, and show project file
+4. Show dotnet tool restore
+5. Add first migration
+  - Use precision attribute
+  - ConfigureConventions
+6. Add second migration
+  - Show data loss
+  - Show that no change is made for decimal precision
+  - Supress warning
+7. Create and run bundle
+  - Show in SSMS
+8. Move on to temporal tables
+  - What are they
+  - model builkding
+9. Add migration
+  - New bundle
+  - Apply
+10. Apply bundle to production database
+11. Make history
+   - Normal query
+12. TempralAll
+13. TemporalFromTo
+14. 
+
+
+
+

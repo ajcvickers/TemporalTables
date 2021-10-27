@@ -1,10 +1,13 @@
-using System;
-
 public class Order
 {
-    public Guid Id { get; set; }
-    public DateTime OrderDate { get; set; }
-    
-    public Product Product { get; set; }
-    public Customer Customer { get; set; }
+    public Order(DateTime orderDate)
+    {
+        OrderDate = orderDate;
+    }
+
+    public Guid Id { get; private set; }
+    public DateTime OrderDate { get; init; }
+
+    public Product Product { get; set; } = null!;
+    public Customer Customer { get; set; } = null!;
 }

@@ -1,8 +1,12 @@
-using System;
-
 public class Product
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; }
+    public Product(string name, decimal price)
+    {
+        Name = name;
+        Price = price;
+    }
+
+    public Guid Id { get; private set; }
+    public string Name { get; init; }
     public decimal Price { get; set; }
 }
